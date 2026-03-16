@@ -1,0 +1,241 @@
+@charset "UTF-8";
+
+/* ==========================================
+   1. 基本設定
+   ========================================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden; /* 防止產生左右捲軸 */
+}
+
+/* 核心：定義置中的容器 */
+.inner-content {
+    max-width: 1920px; 
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* 隱藏漢堡選單的勾勾（開關） */
+#menu-toggle {
+    display: none !important;
+}
+
+/* 電腦版時隱藏漢堡三條線圖示 */
+.hb-menu {
+    display: none;
+}
+
+/* ==========================================
+   2. 頁首與導覽列 (Header & Nav)
+   ========================================== */
+
+.site-header {
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 15px 0;
+    position: sticky; /* 捲動時固定在頂部 */
+    top: 0;
+    z-index: 2000;
+}
+
+
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+.logo a:hover {
+    opacity: 0.8;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.main-nav li {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.main-nav ul li a {
+    text-decoration: none !important;
+    color: #333333 !important;
+    transition: 0.3s;
+}
+
+.main-nav ul li a:hover {
+    color: #004b91 !important; /* 滑鼠移過去換色 */
+}
+
+/* IG 圖示 */
+.nav-social img {
+    width: 24px !important;
+    height: auto !important;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.nav-social a:hover img {
+    opacity: 0.7;
+}
+
+/* ==========================================
+   3. 內容區塊 (Content Sections)
+   ========================================== */
+
+/* ABOUT 導言 */
+.about-intro {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.about-intro h1 {
+    font-size: 36px;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+
+.intro-text p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.highlight-kr, .highlight-en {
+    font-weight: 800;
+    font-size: 18px !important;
+    margin-top: 20px !important;
+    display: block; /* 確保獨立成行 */
+}
+
+/* 角色大圖區塊 (強制滿版修正) */
+.character-section {
+    width: 100%;
+}
+
+.character-bg {
+    width: 100%;
+    overflow: hidden;
+    /* 拉開下方藍條的間距 padding-bottom */
+    padding-bottom: 20px; 
+}
+
+.character-section .inner-content {
+    max-width: 100% !important; /* 強制撐滿螢幕 */
+    width: 100% !important;
+    padding: 0;
+}
+
+.character-section img {
+    width: 100% !important;
+    height: auto;
+    display: block;
+}
+
+/* ==========================================
+   4. 頁尾 (Footer)
+   ========================================== */
+.site-footer {
+    text-align: center;
+    padding: 60px 0;
+    background-color: #fff;
+    font-size: 12px;
+    color: #999;
+}
+
+.footer-logo {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* ==========================================
+   5. RWD 手機版回應式語法 (768px 以下)
+   ========================================== */
+@media screen and (max-width: 768px) {
+    /* 漢堡選單圖示顯示 */
+    .hb-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .bar {
+        width: 100%;
+        height: 3px;
+        background-color: #333;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+    /* 手機版選單容器 */
+    .main-nav {
+        position: absolute;
+        top: 60px; /* 視 Header 高度微調 */
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        padding: 20px 0;
+        gap: 0;
+    }
+
+    .main-nav ul li {
+        margin: 15px 0;
+    }
+
+    /* 勾選後展開選單 */
+    #menu-toggle:checked ~ .main-nav {
+        max-height: 500px;
+    }
+
+    /* 漢堡變 X 動畫 */
+    #menu-toggle:checked + .hb-menu .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    #menu-toggle:checked + .hb-menu .bar:nth-child(2) { opacity: 0; }
+    #menu-toggle:checked + .hb-menu .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* 角色區塊手機版微調 */
+    .character-main-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* 平板與手機通用微調 */
+@media screen and (max-width: 992px) {
+    .about-intro h1 { font-size: 28px; }
+}
