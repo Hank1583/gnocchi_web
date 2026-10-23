@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>麵疙瘩狗 Gnocchi-studio — 今天的你，請收信！</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- html2canvas for Exporting Card -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              900: '#0F0C1B',
+              800: '#18132B',
+              700: '#261F42',
+              600: '#3D3363',
+              accent: '#E2C285', // Soft Warm Gold
+              rose: '#E8B4B8',   // Ethereal Rose
+              lavender: '#C8B6E2',// Soft Lavender
+              mint: '#B8E0D2'
+            }
+          },
+          fontFamily: {
+              sans: ['Noto Sans TC', 'sans-serif'],
+              serif: ['Noto Sans TC', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+            'sparkle': 'sparkle 2s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-8px) rotate(1deg)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', filter: 'drop-shadow(0 0 15px rgba(226, 194, 133, 0.3))' },
+              '50%': { opacity: '0.8', filter: 'drop-shadow(0 0 25px rgba(232, 180, 184, 0.5))' },
+            },
+            sparkle: {
+              '0%, 100%': { opacity: '0.2', transform: 'scale(0.8)' },
+              '50%': { opacity: '1', transform: 'scale(1.2)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0F0C1B;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ffffff;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E2C285;
+    }
+
+    .floating-title {
+      color: #004F9B;
+      font-weight: 800;
+      text-align: center;
+      animation: titleFloat 3s ease-in-out infinite;
+      margin-top: 50px;
+    }
+      /* 上下漂浮動畫 */
+      @keyframes titleFloat {
+        0%, 100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+    /* 洗牌按鈕 */
+    .shuffle-button {
+      background-color: #004F9B;
+      color: #C9EFFF;
+      border: 2px solid #004F9B;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    /* 3D Card Flip Perspective */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* Ambient background gradient */
+    body {
+      background: rgb(160, 216, 238);
+      color: #E2E8F0;
+      min-height: 100vh;
+      font-family: 'Noto Sans TC';
+    }
+
+    /* Ethereal Glassmorphism */
+    .glass-panel {
+      background: rgba(25, 20, 43, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 194, 133, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .glass-button {
+      background: linear-gradient(135deg, rgba(226, 194, 133, 0.15) 0%, rgba(200, 182, 226, 0.1) 100%);
+      border: 1px solid rgba(226, 194, 133, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-button:hover {
+      background: linear-gradient(135deg, rgba(226, 194, 133, 0.3) 0%, rgba(232, 180, 184, 0.25) 100%);
+      border-color: rgba(226, 194, 133, 0.6);
+      box-shadow: 0 0 20px rgba(226, 194, 133, 0.25);
+    }
+    /* Put the final card in the center of the two-column grid */
+    #cardsGrid .card-item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      width: calc((100% - 12px) / 2);
+      justify-self: center;
+    }
+    @media (min-width: 768px) {
+      #cardsGrid .card-item:last-child:nth-child(odd) {
+        width: calc((100% - 20px) / 2);
+      }
+    }
+  </style>
+</head>
+<body class="relative overflow-x-hidden flex flex-col min-h-screen">
+
+  <!-- Background Decorative Stars & Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-cosmic-lavender/10 rounded-full blur-3xl animate-pulse-glow"></div>
+    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-cosmic-rose/10 rounded-full blur-3xl animate-pulse-glow" style="animation-delay: 1.5s;"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-cosmic-accent/10 rounded-full blur-3xl animate-pulse-glow" style="animation-delay: 3s;"></div>
+    
+    <!-- Canvas for floating particles -->
+    <canvas id="starsCanvas" class="absolute inset-0 w-full h-full opacity-60"></canvas>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-panel px-6 py-3 rounded-full text-cosmic-accent font-medium text-sm flex items-center space-x-2 border border-cosmic-accent/40 shadow-lg">
+      <i class="fa-solid fa-sparkles"></i>
+      <span id="toastMsg">訊息通知</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-10 text-center pb-4">
+     <div class="w-full mb-5">
+      <picture>
+        <!-- 手機版：螢幕寬度 767px 以下 -->
+        <source
+          media="(max-width: 767px)"
+          srcset="./image/top-sp.png"
+        />
+  
+        <!-- 電腦版 -->
+        <img
+          src="./image/top.png"
+          alt="麵疙瘩狗 Gnocchi"
+          class="block w-full h-auto"
+        />
+      </picture>
+  </div>
+  <h1 class="floating-title text-3xl md:text-4xl lg:text-5xl font-sans font-extrabold tracking-wide py-3">
+    今天的你，請收信！
+  </h1>
+    <p class="text-base md:text-lg max-w-md mx-auto mt-2 font-medium tracking-wider"
+        style="color: #004F9B;">
+      抽一張小卡，看看今天宇宙想偷偷告訴你什麼。
+    </p>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-2 md:px-4 py-4 max-w-6xl mx-auto w-full">
+
+    <section id="deckSection" class="w-full flex flex-col items-center transition-all duration-500">
+      <!-- Action Controls above Cards -->
+      <div class="mb-8 flex items-center space-x-4">
+        <button id="shuffleBtn" onclick="shuffleCardsAnimation()" class="shuffle-button px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 group">
+          <i class="fa-solid fa-arrows-rotate group-hover:rotate-180 transition-transform duration-500"></i>
+          <span>洗牌重新感應</span>
+        </button>
+      </div>
+
+      <!-- 5 Cards Container -->
+      <div id="cardsGrid" class="grid grid-cols-2 md:gap-5 w-full max-w-[650px] mx-auto px-0 py-2">
+        <!-- 5 Cards populated via JavaScript -->
+      </div>
+
+      <!-- Helper Hint -->
+      <p id="promptHint"
+   class="text-lg md:text-xl font-semibold tracking-wide mt-6 text-center"
+   style="color: #004F9B;">
+      根據直覺，抽一張牌吧！！
+</p>
+    </section>
+
+    <!-- Reading Result View (Hidden until card drawn) -->
+    <section id="resultSection" class="hidden w-full max-w-4xl mx-auto transition-all duration-700 opacity-0 translate-y-8">
+      <div id="captureArea"
+      class="rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden my-4"
+      style="
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      ">
+        <!-- Watermark / Decorative Background Logo for Captured Image -->
+        <div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none">
+          <i class="fa-solid fa-compass-drafting text-[240px] text-cosmic-accent"></i>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          
+          <!-- Selected Card Showcase (3D Animated Container) -->
+          <div class="md:col-span-5 flex flex-col items-center justify-center">
+           <!-- 抽牌結果圖片：只有圖片 -->
+              <div id="resultCardWrapper"
+              class="w-full max-w-[320px] mx-auto my-2">
+
+              <img
+              id="resultCardImage"
+              src=""
+              alt="今日指引牌卡"
+              class="block w-full h-auto"
+              />
+
+              </div>
+              </div>
+
+          <!-- Detailed Reading Content -->
+          <div class="md:col-span-7 flex flex-col justify-between space-y-6">
+            
+            <!-- Card Header -->
+            <div>
+
+              <h2 id="cardTitle"
+              class="text-2xl sm:text-3xl font-sans font-bold mt-2"
+              style="color: #004F9B;">牌卡名稱
+          </h2>
+          <p id="cardKeywords"
+          class="text-sm md:text-base font-medium mt-2 leading-relaxed"
+          style="color: #004F9B;">
+         關鍵字：平靜 · 直覺 · 新的開始
+       </p>
+            </div>
+
+            <!-- Core Message -->
+            
+            <div class="space-y-5">
+
+              <!-- 核心訊息：深藍底、淺藍字 -->
+              <div class="p-5 rounded-2xl"
+                  style="background-color: #004F9B;">
+
+                <h3 class="text-base md:text-lg font-bold mb-3 flex items-center"
+                    style="color: #DDF3FF;">
+                  <i class="fa-solid fa-quote-left mr-2"></i>
+                  核心訊息 OVERVIEW
+                </h3>
+
+                <p id="cardOverview"
+                  class="text-base md:text-lg leading-relaxed font-medium"
+                  style="color: #DDF3FF;">
+                  核心解讀訊息將顯示於此...
+                </p>
+
+              </div>
+
+              <!-- 今日小行動：淺藍底、深藍字 -->
+              <div class="p-5 rounded-2xl"
+                  style="background-color: #b6e2f3;">
+
+                <h3 class="text-base md:text-lg font-bold mb-3"
+                    style="color: #004F9B;">
+                  ✦ 今日小行動 Daily Reflection
+                </h3>
+
+                <p id="cardAction"
+                  class="text-base md:text-lg leading-relaxed font-medium"
+                  style="color: #004F9B;">
+                  嘗試花 5 分鐘靜坐，聽聽內心最真實的聲音。
+                </p>
+
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Reading Action Bar (Below Image Area) -->
+      <!-- Reading Action Bar -->
+<div class="flex flex-wrap items-center justify-center gap-3 mt-6">
+
+  <!-- 重新抽牌：深藍底、淺藍字 -->
+  <button
+    onclick="resetDraw()"
+    class="px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1"
+    style="background-color: #004F9B; color: #C9EFFF;"
+  >
+    <i class="fa-solid fa-rotate-left"></i>
+    <span>重新抽牌</span>
+  </button>
+
+  <!-- 複製牌卡指引：白底、深藍字 -->
+  <button
+    onclick="copyReadingText()"
+    class="px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1"
+    style="background-color: #FFFFFF; color: #004F9B;"
+  >
+    <i class="fa-regular fa-copy"></i>
+    <span>複製牌卡指引</span>
+  </button>
+
+  <!-- 保存解答圖卡：黃底、深藍字 -->
+  <button
+    onclick="exportResultImage()"
+    class="px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1"
+    style="background-color: #FFE48A; color: #004F9B;"
+  >
+    <i class="fa-solid fa-download"></i>
+    <span>保存解答圖卡</span>
+  </button>
+
+</div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <div class="w-full mb-5">
+    <picture>
+      <!-- 手機版：螢幕寬度 767px 以下 -->
+      <source
+        media="(max-width: 767px)"
+        srcset="./image/bottom-sp.png"
+      />
+
+      <!-- 電腦版 -->
+      <img
+        src="./image/bottom.png"
+        alt="麵疙瘩狗 Gnocchi"
+        class="block w-full h-auto"
+      />
+    </picture>
+</div>
+  <footer class="relative z-10 text-center py-4 text-xs font-medium" style="color: #004F9B";>
+<p><span class="text-lg">麵疙瘩狗Gnocchi.studio</span><br><br>Instagram:@Gnocchi.studio<br>Gmail:gnocchi.studio@gmail.com<br><br>©Gnocchi.studio. All Rights Reserved</p>
+</footer>
+
+  <!-- Javascript Logic -->
+  <script>
+    /* ==========================================================================
+       CUSTOM CARDS CONFIGURATION (五張自訂牌卡設定區)
+       你可以隨時將 imageUrl 替換為你的圖片連結 (例如: 'images/card1.png' 或 網址)
+       ========================================================================== */
+    const CUSTOM_CARDS = [
+      {
+        id: 1,
+        name: "01. 晨曦曙光 · The Dawn",
+        // 替換這裏的圖片網址為你的第一張圖
+        imageUrl: "./image/a-card-1.png",
+        keywords: "希望 · 嶄新開始 · 清晰直覺 · 內在甦醒",
+        overview: "晨曦代表著黑夜過去後的溫柔光芒。這張牌提醒你，無論過去經歷了什麼混亂，現在是全新的起點。 clarity and warmth are now flowing into your life.",
+        love: "在關係中注入新鮮感與坦誠，舊有的誤會將如霧氣般消散。",
+        growth: "適合啟動新計畫或學習新技能，相信你當下的第一直覺。",
+        action: "清晨打開窗戶呼吸新鮮空氣，寫下今日最想完成的微小願望。"
+      },
+      {
+        id: 2,
+        name: "02. 月影神殿 · The Sanctuary",
+        // 替換這裏的圖片網址為你的第二張圖
+        imageUrl: "./image/a-card-1.pn",
+        keywords: "沉潛 · 內在智慧 · 邊界設立 · 溫柔修復",
+        overview: "這是一張邀請你回到內心殿堂的牌卡。外在世界或許嘈雜，但你的內心擁有無窮的力量與解答。請給自己充分的沉澱時間。",
+        love: "給予彼此獨立呼吸的空間，真正的靠近源於個體的完整與自洽。",
+        growth: "適合進行自我反思或整頓工作環境，先理清內心，行動自然順暢。",
+        action: "今晚睡前熄燈靜坐 5 分鐘，放慢呼吸，感受內心的平靜。"
+      },
+      {
+        id: 3,
+        name: "03. 靈魂繁花 · The Blossom",
+        // 替換這裏的圖片網址為你的第三張圖
+        imageUrl: "./image/a-card-1.pn",
+        keywords: "豐盛 · 創造力 · 成果展現 · 愛與自洽",
+        overview: "繁花盛開的時機已經成熟。你的付出與累積正在轉化為甜美的果實。學會欣賞並讚美現在的自己，允許美好的事物進入生活中。",
+        love: "展現你最真實美麗的一面，你的自信與溫柔將吸引懂你的人。",
+        growth: "創造力爆發的時期，大膽展現你的作品與想法，會獲得理想迴響。",
+        action: "為自己買一朵花或一杯喜愛的飲品，真誠地感謝自己的努力。"
+      },
+      {
+        id: 4,
+        name: "04. 星空指南針 · The Compass",
+        // 替換這裏的圖片網址為你的第四張圖
+        imageUrl: "./image/a-card-1.pn",
+        keywords: "方向 · 抉擇 · 核心價值 · 堅定信念",
+        overview: "當你感到迷惘時，這張牌是你的指引之星。不要被旁人的聲音牽著走，問問自己最重視的核心價值是什麼，答案便不言而喻。",
+        love: "釐清你在這段關係中真正想要的是什麼，勇敢表達你的期待。",
+        growth: "面臨選擇時，選擇那個能讓你長遠成長、而非短期舒適的道路。",
+        action: "在紙上列出當前最困擾你的 2 個選擇，聽聽內心偏向哪一方。"
+      },
+      {
+        id: 5,
+        name: "05. 宇宙流轉 · The Cosmos Flow",
+        // 替換這裏的圖片網址為你的第五張圖
+        imageUrl: "./image/a-card-1.pn",
+        keywords: "順應 · 信任過程 · 解放執著 · 奇蹟降臨",
+        overview: "宇宙正以最適合你的節奏推進著一切。停止過度掌控與焦慮，學會放手與順應。當你不再死守舊有模式，驚喜往往隨之而來。",
+        love: "放鬆對關係的控制欲，順其自然地發展，會有意想不到的溫馨突破。",
+        growth: "遇到變化時保持彈性適應，轉角往往隱藏著更廣闊的機會。",
+        action: "做一次深呼吸，對自己說：「我信任當下所有的安排都通往美好。」"
+      }
+    ];
+
+    // Card Back Image Design SVG Base64 (Standard aesthetic backing)
+    const CARD_BACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="480" viewBox="0 0 300 480"><rect width="100%" height="100%" fill="%2318132B"/><rect x="12" y="12" width="276" height="456" rx="16" fill="none" stroke="%23E2C285" stroke-opacity="0.3" stroke-width="1.5"/><rect x="20" y="20" width="260" height="440" rx="12" fill="none" stroke="%23E2C285" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4 4"/><circle cx="150" cy="240" r="70" fill="none" stroke="%23E2C285" stroke-opacity="0.3" stroke-width="1"/><circle cx="150" cy="240" r="50" fill="none" stroke="%23E8B4B8" stroke-opacity="0.2" stroke-width="1"/><polygon points="150,180 162,228 210,240 162,252 150,300 138,252 90,240 138,228" fill="%23E2C285" fill-opacity="0.25"/><circle cx="150" cy="240" r="6" fill="%23E2C285" fill-opacity="0.8"/><g fill="%23E2C285" fill-opacity="0.4"><circle cx="150" cy="60" r="3"/><circle cx="150" cy="420" r="3"/><circle cx="60" cy="240" r="3"/><circle cx="240" cy="240" r="3"/></g></svg>`;
+
+    // Global State Variables
+    let currentShuffledCards = [];
+    let selectedCardIndex = null;
+    let isFlipping = false;
+
+    // Initialize App on DOM Load
+    document.addEventListener("DOMContentLoaded", () => {
+      initStarfield();
+      resetDraw();
+      setReadingDate();
+    });
+
+    // Set Current Date Display
+    function setReadingDate() {
+      const today = new Date();
+      const dateStr = today.getFullYear() + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + String(today.getDate()).padStart(2, '0');
+      document.getElementById('readingDate').innerText = dateStr;
+    }
+
+    // Initialize Starfield Background Canvas
+    function initStarfield() {
+      const canvas = document.getElementById('starsCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const stars = [];
+      const starCount = Math.floor((width * height) / 10000);
+
+      for (let i = 0; i < starCount; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.2 + 0.3,
+          alpha: Math.random(),
+          speed: Math.random() * 0.01 + 0.003
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach(s => {
+          s.alpha += s.speed;
+          if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(226, 194, 133, ${Math.max(0, s.alpha * 0.7)})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+    }
+
+    // Reset or Shuffle Deck logic
+    function resetDraw() {
+      isFlipping = false;
+      selectedCardIndex = null;
+
+      // Hide Result Section & Show Deck
+      const resultSec = document.getElementById('resultSection');
+      const deckSec = document.getElementById('deckSection');
+      
+      resultSec.classList.add('hidden', 'opacity-0', 'translate-y-8');
+      deckSec.classList.remove('hidden', 'opacity-0');
+
+      // Shuffle duplicate array of custom cards
+      currentShuffledCards = [...CUSTOM_CARDS].sort(() => Math.random() - 0.5);
+
+      renderDeck();
+    }
+
+    // Custom card-back image (1080 × 1350, 4:5)
+    const CARD_BACK_IMAGE = "./image/card-1.png";
+
+    function renderDeck() {
+      const grid = document.getElementById('cardsGrid');
+      grid.innerHTML = '';
+
+      currentShuffledCards.forEach((card, index) => {
+        const cardContainer = document.createElement('div');
+        cardContainer.className = 'card-item relative w-full aspect-[4/5] cursor-pointer group perspective-1000 transition-all duration-300 hover:-translate-y-2 animate-float';
+        cardContainer.style.animationDelay = `${index * 0.25}s`;
+        cardContainer.innerHTML = `
+          <div class="w-full h-full relative rounded-xl overflow-hidden">
+            <img src="${CARD_BACK_IMAGE}" alt="麵疙瘩狗今日指引牌卡" class="block w-full h-full object-cover rounded-xl" />
+          </div>
+        `;
+        cardContainer.onclick = () => handleCardSelect(index, cardContainer);
+        grid.appendChild(cardContainer);
+      });
+    }
+
+    // Shuffle Animation triggered manually
+    function shuffleCardsAnimation() {
+      const cards = document.querySelectorAll('#cardsGrid > div');
+      cards.forEach((card, idx) => {
+        card.style.transform = `scale(0.9) rotate(${ (idx - 2) * 8 }deg)`;
+      });
+
+      setTimeout(() => {
+        resetDraw();
+        showToast("牌卡已重新混合感應 ✦");
+      }, 400);
+    }
+
+    // Handle User Card Selection & Flip Transition
+    function handleCardSelect(index, cardElem) {
+      if (isFlipping) return;
+      isFlipping = true;
+      selectedCardIndex = index;
+
+      const selectedCardData = currentShuffledCards[index];
+
+      // Fade out non-selected cards softly
+      const allCards = document.querySelectorAll('#cardsGrid > div');
+      allCards.forEach((c, idx) => {
+        if (idx !== index) {
+          c.style.opacity = '0.2';
+          c.style.transform = 'scale(0.95)';
+        } else {
+          c.style.transform = 'scale(1.05) translateY(-10px)';
+        }
+      });
+
+      // Show flip animation and transition to result view after short delay
+      setTimeout(() => {
+        revealResultView(selectedCardData);
+      }, 600);
+    }
+
+    // Reveal Result Screen with 3D Card Flip
+    function revealResultView(cardData) {
+      const deckSec = document.getElementById('deckSection');
+      const resultSec = document.getElementById('resultSection');
+
+      deckSec.classList.add('opacity-0');
+      
+      setTimeout(() => {
+        deckSec.classList.add('hidden');
+        resultSec.classList.remove('hidden');
+
+        // Populate card details
+        document.getElementById('resultCardImage').src = cardData.imageUrl;
+        document.getElementById('cardTitle').innerText = cardData.name;
+        document.getElementById('cardKeywords').innerText = `關鍵字：${cardData.keywords}`;
+        document.getElementById('cardOverview').innerText = cardData.overview;
+        document.getElementById('cardAction').innerText = cardData.action;
+
+        // Trigger smooth entrance
+        setTimeout(() => {
+          resultSec.classList.remove('opacity-0', 'translate-y-8');
+          
+          // Trigger 3D Card Flip in Result View
+          const card3D = document.getElementById('resultCard3D');
+          card3D.classList.add('rotate-y-180');
+        }, 50);
+
+      }, 400);
+    }
+
+    // Copy Reading Result to Clipboard
+    function copyReadingText() {
+      if (selectedCardIndex === null) return;
+      const card = currentShuffledCards[selectedCardIndex];
+      
+      const textToCopy = `✦ Petit Tarot 每日心靈指引 ✦\n\n【抽中牌卡】${card.name}\n【核心解讀】${card.overview}\n【感情指引】${card.love}\n【成長成長】${card.growth}\n【今日行動】${card.action}\n\n— 來自 Petit Factory 的靈魂對話`;
+
+      // Copy using document.execCommand for iframe compatibility
+      const textarea = document.createElement('textarea');
+      textarea.value = textToCopy;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("牌卡指引內容已複製至剪貼簿 ✨");
+      } catch (err) {
+        showToast("複製失敗，請手動複製");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Export Result as Image Card via html2canvas
+    function exportResultImage() {
+      showToast("正在生成精美解答圖卡...");
+      const target = document.getElementById('captureArea');
+
+      html2canvas(target, {
+        backgroundColor: '#0F0C1B',
+        scale: 2,
+        useCORS: true, // Allows loading external images if CORS enabled
+        logging: false
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Petit_Tarot_Reading_${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast("圖卡已成功下載！✦");
+      }).catch(err => {
+        console.error(err);
+        showToast("圖卡生成受限（可能因外部圖片跨域問題）");
+      });
+    }
+
+    // Toast Notification helper
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = message;
+
+      toast.classList.remove('opacity-0', '-translate-y-20');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-20');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
