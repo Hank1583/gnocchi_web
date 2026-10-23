@@ -236,10 +236,10 @@
       <div id="captureArea"
       class="rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden my-4"
       style="
-        background: rgba(255, 255, 255, 0.65);
+        background: rgb(255, 255, 255);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        border: 1px solid rgb(255, 255, 255);
       ">
         <!-- Watermark / Decorative Background Logo for Captured Image -->
         <div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none">
@@ -342,15 +342,7 @@
     <span>重新抽牌</span>
   </button>
 
-  <!-- 複製牌卡指引：白底、深藍字 -->
-  <button
-    onclick="copyReadingText()"
-    class="px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1"
-    style="background-color: #FFFFFF; color: #004F9B;"
-  >
-    <i class="fa-regular fa-copy"></i>
-    <span>複製牌卡指引</span>
-  </button>
+
 
   <!-- 保存解答圖卡：黃底、深藍字 -->
   <button
@@ -646,7 +638,6 @@
 
     // Export Result as Image Card via html2canvas
     function exportResultImage() {
-      showToast("正在生成精美解答圖卡...");
       const target = document.getElementById('captureArea');
 
       html2canvas(target, {
@@ -659,10 +650,8 @@
         link.download = `Petit_Tarot_Reading_${Date.now()}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
-        showToast("圖卡已成功下載！✦");
       }).catch(err => {
         console.error(err);
-        showToast("圖卡生成受限（可能因外部圖片跨域問題）");
       });
     }
 
