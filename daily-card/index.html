@@ -640,7 +640,7 @@
         logging: false
       }).then(canvas => {
         const link = document.createElement('a');
-        link.download = `Petit_Tarot_Reading_${Date.now()}.png`;
+        link.download = `麵疙瘩狗Gnocchi_今天宇宙想告訴你_${Date.now()}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
       }).catch(err => {
