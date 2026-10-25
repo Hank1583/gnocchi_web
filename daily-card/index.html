@@ -198,11 +198,13 @@
       </picture>
   </div>
   <h1 class="floating-title text-3xl md:text-4xl lg:text-5xl font-sans font-extrabold tracking-wide py-3">
-    今天的你，請收信！
+    今天，宇宙想說什麼？
   </h1>
     <p class="text-base md:text-lg max-w-md mx-auto mt-2 font-medium tracking-wider"
         style="color: #004F9B;">
-      抽一張小卡，看看今天宇宙想偷偷告訴你什麼。
+        聽說，宇宙每天都會留下一點小小的提示。<br>
+      【憑著直覺選一張牌，領取專屬於你的今日指引。】<br>
+      讓麵疙瘩陪你一起，看看今天宇宙想偷偷告訴你什麼。
     </p>
   </header>
 
@@ -236,7 +238,7 @@
       <div id="captureArea"
       class="rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden my-4"
       style="
-        background: rgb(255, 255, 255);
+        background: rgba(255, 255, 255,0.65);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgb(255, 255, 255);
@@ -277,7 +279,7 @@
           <p id="cardKeywords"
           class="text-sm md:text-base font-medium mt-2 leading-relaxed"
           style="color: #004F9B;">
-         關鍵字：平靜 · 直覺 · 新的開始
+          核心牌義：
        </p>
             </div>
 
@@ -292,7 +294,7 @@
                 <h3 class="text-base md:text-lg font-bold mb-3 flex items-center"
                     style="color: #DDF3FF;">
                   <i class="fa-solid fa-quote-left mr-2"></i>
-                  核心訊息 OVERVIEW
+                  宇宙想給你的訊息：
                 </h3>
 
                 <p id="cardOverview"
@@ -309,7 +311,8 @@
 
                 <h3 class="text-base md:text-lg font-bold mb-3"
                     style="color: #004F9B;">
-                  ✦ 今日小行動 Daily Reflection
+                  ✦ 指引：
+
                 </h3>
 
                 <p id="cardAction"
@@ -333,14 +336,14 @@
 <div class="flex flex-wrap items-center justify-center gap-3 mt-6">
 
   <!-- 重新抽牌：深藍底、淺藍字 -->
-  <button
+  <!-- <button
     onclick="resetDraw()"
     class="px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1"
     style="background-color: #004F9B; color: #C9EFFF;"
   >
     <i class="fa-solid fa-rotate-left"></i>
     <span>重新抽牌</span>
-  </button>
+  </button>-->
 
 
 
@@ -348,7 +351,7 @@
   <button
     onclick="exportResultImage()"
     class="px-6 py-3 rounded-full text-sm md:text-base font-semibold tracking-wider flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1"
-    style="background-color: #FFE48A; color: #004F9B;"
+    style="background-color: #004F9B; color: #ffffff;"
   >
     <i class="fa-solid fa-download"></i>
     <span>保存解答圖卡</span>
@@ -389,58 +392,48 @@
     const CUSTOM_CARDS = [
       {
         id: 1,
-        name: "01. 晨曦曙光 · The Dawn",
+        name: "寶劍六（Six of Swords)",
         // 替換這裏的圖片網址為你的第一張圖
         imageUrl: "./image/a-card-1.png",
-        keywords: "希望 · 嶄新開始 · 清晰直覺 · 內在甦醒",
-        overview: "晨曦代表著黑夜過去後的溫柔光芒。這張牌提醒你，無論過去經歷了什麼混亂，現在是全新的起點。 clarity and warmth are now flowing into your life.",
-        love: "在關係中注入新鮮感與坦誠，舊有的誤會將如霧氣般消散。",
-        growth: "適合啟動新計畫或學習新技能，相信你當下的第一直覺。",
-        action: "清晨打開窗戶呼吸新鮮空氣，寫下今日最想完成的微小願望。"
+        keywords: "過渡期、療癒、離開困境、平靜的轉變",
+        overview: "雖然過去經歷了一段艱難或紛擾的時刻，但現在正處於前往安全、平靜之地的旅程中。這是一張代表「漸入佳境」的牌，雖然傷口尚未完全癒合，但最糟的風暴已經過去，請安心迎接平穩的未來。",
+        action: "給自己一些時間和空間沉澱，不要急於求成。拋下不必要的包袱，專注於前方平靜的目標。"
       },
       {
         id: 2,
-        name: "02. 月影神殿 · The Sanctuary",
+        name: "寶劍七（Seven of Swords）",
         // 替換這裏的圖片網址為你的第二張圖
-        imageUrl: "./image/a-card-1.png",
-        keywords: "沉潛 · 內在智慧 · 邊界設立 · 溫柔修復",
-        overview: "這是一張邀請你回到內心殿堂的牌卡。外在世界或許嘈雜，但你的內心擁有無窮的力量與解答。請給自己充分的沉澱時間。",
-        love: "給予彼此獨立呼吸的空間，真正的靠近源於個體的完整與自洽。",
-        growth: "適合進行自我反思或整頓工作環境，先理清內心，行動自然順暢。",
-        action: "今晚睡前熄燈靜坐 5 分鐘，放慢呼吸，感受內心的平靜。"
+        imageUrl: "./image/a-card-2.png",
+        keywords: "策略、小聰明、避開衝突、獨立自主、權宜之計",
+        overview: "這張牌暗示在面對問題時，或許需要用比較靈活、迂迴的策略來解決，而不是硬碰硬。有時候，懂得保護自己、適度保留實力，或是換個更聰明的方法行事，也是一種智慧。",
+        action: "行事保持謹慎，注意周遭的細節與動向。如果正面對抗行不通，不妨思考更具彈性的替代方案。"
       },
       {
         id: 3,
-        name: "03. 靈魂繁花 · The Blossom",
+        name: "寶劍三（Three of Swords）",
         // 替換這裏的圖片網址為你的第三張圖
-        imageUrl: "./image/a-card-1.png",
-        keywords: "豐盛 · 創造力 · 成果展現 · 愛與自洽",
-        overview: "繁花盛開的時機已經成熟。你的付出與累積正在轉化為甜美的果實。學會欣賞並讚美現在的自己，允許美好的事物進入生活中。",
-        love: "展現你最真實美麗的一面，你的自信與溫柔將吸引懂你的人。",
-        growth: "創造力爆發的時期，大膽展現你的作品與想法，會獲得理想迴響。",
-        action: "為自己買一朵花或一杯喜愛的飲品，真誠地感謝自己的努力。"
+        imageUrl: "./image/a-card-3.png",
+        keywords: "心碎、悲傷、失落感、情緒釋放、真相陣痛",
+        overview: "這是一張與情感受挫、失望或心痛相關的牌。可能會經歷意見不合、溝通誤解或計畫受阻帶來的失落感。然而，透過淚水與悲傷將情緒宣洩出來，正是心靈排毒與走向真正癒合的必經之路。",
+        action: "允許自己難過，不用強迫裝作堅強。誠實面對內心的傷痛，時間會撫平一切。"
       },
       {
         id: 4,
-        name: "04. 星空指南針 · The Compass",
+        name: "權杖七（Seven of Wands）",
         // 替換這裏的圖片網址為你的第四張圖
-        imageUrl: "./image/a-card-1.png",
-        keywords: "方向 · 抉擇 · 核心價值 · 堅定信念",
-        overview: "當你感到迷惘時，這張牌是你的指引之星。不要被旁人的聲音牽著走，問問自己最重視的核心價值是什麼，答案便不言而喻。",
-        love: "釐清你在這段關係中真正想要的是什麼，勇敢表達你的期待。",
-        growth: "面臨選擇時，選擇那個能讓你長遠成長、而非短期舒適的道路。",
-        action: "在紙上列出當前最困擾你的 2 個選擇，聽聽內心偏向哪一方。"
+        imageUrl: "./image/a-card-4.png",
+        keywords: "堅持、防守、守護成果、迎接挑戰、堅定立場",
+        overview: "你目前可能處於一個需要捍衛自己立場或成果的位置。周遭或許有一些競爭或挑戰，但你有足夠的能力與優勢站穩腳步。這張牌鼓勵你保持自信，勇敢守護自己的信念與努力。",
+        action: "相信自己的能力，不要輕易向壓力妥協。堅守原則，勇敢對不合理的要求說不。"
       },
       {
         id: 5,
-        name: "05. 宇宙流轉 · The Cosmos Flow",
+        name: "死神（XIII - Death）",
         // 替換這裏的圖片網址為你的第五張圖
-        imageUrl: "./image/a-card-2.png",
-        keywords: "順應 · 信任過程 · 解放執著 · 奇蹟降臨",
-        overview: "宇宙正以最適合你的節奏推進著一切。停止過度掌控與焦慮，學會放手與順應。當你不再死守舊有模式，驚喜往往隨之而來。",
-        love: "放鬆對關係的控制欲，順其自然地發展，會有意想不到的溫馨突破。",
-        growth: "遇到變化時保持彈性適應，轉角往往隱藏著更廣闊的機會。",
-        action: "做一次深呼吸，對自己說：「我信任當下所有的安排都通往美好。」"
+        imageUrl: "./image/a-card-5.png",
+        keywords: "結束與重生、轉化、放下過去、全新的開始",
+        overview: "死神牌在塔羅中從來不是指肉體的死亡，而是象徵「一個階段的結束與另一個階段的誕生」。當某個舊有的習慣、關係或環境已經不再適合你，必須勇敢地斷捨離，才能騰出空間迎接美好的轉變。",
+        action: "試著學會放手，結束往往是更好機會的開端。以開放的心態去擁抱改變，不要害怕未知。"
       }
     ];
 
