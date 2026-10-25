@@ -238,7 +238,7 @@
       <div id="captureArea"
       class="rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden my-4"
       style="
-        background: rgba(255, 255, 255,0.65);
+        background: rgb(255, 255, 255);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgb(255, 255, 255);
@@ -613,7 +613,7 @@
       if (selectedCardIndex === null) return;
       const card = currentShuffledCards[selectedCardIndex];
       
-      const textToCopy = `✦ Petit Tarot 每日心靈指引 ✦\n\n【抽中牌卡】${card.name}\n【核心解讀】${card.overview}\n【感情指引】${card.love}\n【成長成長】${card.growth}\n【今日行動】${card.action}\n\n— 來自 Petit Factory 的靈魂對話`;
+      const textToCopy = `麵疙瘩狗Gnocchi 今天，宇宙想說什麼\n\n【抽中牌卡】${card.name}\n【宇宙想給你的訊息】${card.overview}\n【感情指引】${card.love}\n【成長成長】${card.growth}\n【指引】${card.action}\n\n `;
 
       // Copy using document.execCommand for iframe compatibility
       const textarea = document.createElement('textarea');
